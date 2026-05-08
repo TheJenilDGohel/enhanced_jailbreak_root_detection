@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:enhanced_jailbreak_root_detection/enhanced_jailbreak_root_detection.dart';
