@@ -252,7 +252,7 @@ Java_com_w3conext_enhanced_1jailbreak_1root_1detection_frida_AntiFridaNativeLoad
     jboolean result = JNI_FALSE;
 
     while ((read_line(fd, buf, buf_size, use_customized_sys_calls)) > 0) {
-        if (sscanf(buf, "%lx-%lx %4s %lx %*s %*s %s", &base, &end, perm, &offset, path) != 5) {
+        if (sscanf(buf, "%lx-%lx %4s %lx %*s %*s %255s", &base, &end, perm, &offset, path) != 5) {
             continue;
         }
 
