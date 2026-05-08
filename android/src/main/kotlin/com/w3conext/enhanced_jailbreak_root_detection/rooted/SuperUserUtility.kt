@@ -48,18 +48,18 @@ object SuperUserUtility {
             stdin.flush()
             stdin.close()
 
-            var br = BufferedReader(InputStreamReader(stdout))
             var line: String?
 
-            while ((br.readLine().also { line = it }) != null) {
-                out += line
+            BufferedReader(InputStreamReader(stdout)).use { br ->
+                while ((br.readLine().also { line = it }) != null) {
+                    out += line
+                }
             }
-            br.close()
-            br = BufferedReader(InputStreamReader(stderr))
-            while ((br.readLine().also { line = it }) != null) {
-                out += line
+            BufferedReader(InputStreamReader(stderr)).use { br ->
+                while ((br.readLine().also { line = it }) != null) {
+                    out += line
+                }
             }
-            br.close()
         } catch (e: Exception) {
             Log.e(TAG, e.stackTraceToString())
         }
