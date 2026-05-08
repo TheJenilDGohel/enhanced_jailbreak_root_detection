@@ -48,31 +48,28 @@ object SuperUserUtility {
             val stdout = process.inputStream
             val stderr = process.errorStream
 
-            Log.i(TAG, "execRootCmd: $cmd")
             stdin.writeBytes(cmd + "\n")
             stdin.flush()
             stdin.writeBytes("exit\n")
             stdin.flush()
             stdin.close()
 
-            br = BufferedReader(InputStreamReader(stdout))
             var line: String?
 
-            while ((br.readLine().also { line = it }) != null) {
-                out += line
+            BufferedReader(InputStreamReader(stdout)).use { br ->
+                while ((br.readLine().also { line = it }) != null) {
+                    out += line
+                }
             }
-            br.close()
-            brErr = BufferedReader(InputStreamReader(stderr))
-            while ((brErr.readLine().also { line = it }) != null) {
-                out += line
+            BufferedReader(InputStreamReader(stderr)).use { br ->
+                while ((br.readLine().also { line = it }) != null) {
+                    out += line
+                }
             }
-            brErr.close()
         } catch (e: Exception) {
             Log.e(TAG, e.stackTraceToString())
         } finally {
             runCatching { stdin?.close() }
-            runCatching { br?.close() }
-            runCatching { brErr?.close() }
             runCatching { process?.inputStream?.close() }
             runCatching { process?.outputStream?.close() }
             runCatching { process?.errorStream?.close() }

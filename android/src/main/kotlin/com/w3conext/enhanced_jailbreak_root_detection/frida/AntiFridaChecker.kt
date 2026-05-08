@@ -79,53 +79,39 @@ class AntiFridaChecker(
             }
 
             // check for Frida-related processes
-            var processPs: Process? = null
-            var bufferedReaderPs: BufferedReader? = null
             try {
-                processPs = Runtime.getRuntime().exec("ps")
-                bufferedReaderPs = BufferedReader(InputStreamReader(processPs.inputStream))
-                var line: String? = bufferedReaderPs.readLine()
-                while (line != null) {
-                    if (line.contains("frida-server")) {
-                        Log.d(TAG, "Frida-server process found")
-                        isFridaRunning = true
-                        break
+                val process = Runtime.getRuntime().exec("ps")
+                BufferedReader(InputStreamReader(process.inputStream)).use { bufferedReader ->
+                    while (true) {
+                        val line = bufferedReader.readLine() ?: break
+                        if (line.contains("frida-server")) {
+                            Log.d(TAG, "Frida-server process found")
+                            isFridaRunning = true
+                            break
+                        }
                     }
-                    line = bufferedReaderPs.readLine()
                 }
+                process.destroy()
             } catch (e: Exception) {
                 Log.d(TAG, "Error checking for Frida-related processes")
-            } finally {
-                runCatching { bufferedReaderPs?.close() }
-                runCatching { processPs?.inputStream?.close() }
-                runCatching { processPs?.outputStream?.close() }
-                runCatching { processPs?.errorStream?.close() }
-                processPs?.destroy()
             }
 
             // check for Frida-related libraries
-            var processLsof: Process? = null
-            var bufferedReaderLsof: BufferedReader? = null
             try {
-                processLsof = Runtime.getRuntime().exec("lsof")
-                bufferedReaderLsof = BufferedReader(InputStreamReader(processLsof.inputStream))
-                var line: String? = bufferedReaderLsof.readLine()
-                while (line != null) {
-                    if (line.contains("libfrida-gadget.so")) {
-                        Log.d(TAG, "Frida-gadget library found")
-                        isFridaRunning = true
-                        break
+                val process = Runtime.getRuntime().exec("lsof")
+                BufferedReader(InputStreamReader(process.inputStream)).use { bufferedReader ->
+                    while (true) {
+                        val line = bufferedReader.readLine() ?: break
+                        if (line.contains("libfrida-gadget.so")) {
+                            Log.d(TAG, "Frida-gadget library found")
+                            isFridaRunning = true
+                            break
+                        }
                     }
-                    line = bufferedReaderLsof.readLine()
                 }
+                process.destroy()
             } catch (e: Exception) {
                 Log.d(TAG, "Error checking for Frida-related libraries")
-            } finally {
-                runCatching { bufferedReaderLsof?.close() }
-                runCatching { processLsof?.inputStream?.close() }
-                runCatching { processLsof?.outputStream?.close() }
-                runCatching { processLsof?.errorStream?.close() }
-                processLsof?.destroy()
             }
 
             Log.i(TAG, "Frida running: $isFridaRunning")

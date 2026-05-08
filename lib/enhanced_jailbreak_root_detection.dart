@@ -298,11 +298,17 @@ class EnhancedJailbreakRootDetection {
   ///   );
   /// }
   /// ```
+  /// Override for testing purposes.
+  @visibleForTesting
+  bool? debugIsAndroidOverride;
+
+  bool get _isAndroid => debugIsAndroidOverride ?? Platform.isAndroid;
+
   Future<bool> get isNotTrust async {
     try {
       final bool jailBroken = await isJailBroken;
       final bool realDevice = await isRealDevice;
-      if (Platform.isAndroid) {
+      if (_isAndroid) {
         final bool onExternalStorage = await isOnExternalStorage;
         return jailBroken || !realDevice || onExternalStorage;
       }
