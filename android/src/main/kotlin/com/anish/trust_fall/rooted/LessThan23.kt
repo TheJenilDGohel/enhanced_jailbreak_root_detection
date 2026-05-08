@@ -24,18 +24,7 @@ class LessThan23 : CheckApiVersion {
         private val isSuperuserPresent: Boolean
             get() {
                 // Check if /system/app/Superuser.apk is present
-                val paths = arrayOf(
-                    "/system/app/Superuser.apk",
-                    "/sbin/su",
-                    "/system/bin/su",
-                    "/system/xbin/su",
-                    "/data/local/xbin/su",
-                    "/data/local/bin/su",
-                    "/system/sd/xbin/su",
-                    "/system/bin/failsafe/su",
-                    "/data/local/su"
-                )
-                for (path in paths) {
+                for (path in SU_PATHS) {
                     if (File(path).exists()) {
                         return true
                     }
