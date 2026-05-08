@@ -55,26 +55,50 @@ void main() {
       detection.debugIsAndroidOverride = null;
     });
 
-    test('checkForIssues returns parsed list of issues', () async {
-      methodChannelReturns['checkForIssues'] = ["jailbreak", "debugged", "unknown_issue"];
+    group('checkForIssues', () {
+      test('returns mapped issues when method channel returns a valid list', () async {
+        methodChannelReturns['checkForIssues'] = ["jailbreak", "proxied", "unknown_issue"];
 
-      final issues = await detection.checkForIssues;
+        final issues = await detection.checkForIssues;
 
-      expect(log, <Matcher>[isMethodCall('checkForIssues', arguments: null)]);
-      expect(issues, [
-        JailbreakIssue.jailbreak,
-        JailbreakIssue.debugged,
-        JailbreakIssue.unknown
-      ]);
-    });
+        expect(log, <Matcher>[isMethodCall('checkForIssues', arguments: null)]);
+        expect(issues, [
+          JailbreakIssue.jailbreak,
+          JailbreakIssue.proxied,
+          JailbreakIssue.unknown
+        ]);
+      });
 
-    test('checkForIssues returns empty list when null is returned', () async {
-      methodChannelReturns['checkForIssues'] = null;
+      test('returns an empty list when method channel returns null', () async {
+        methodChannelReturns['checkForIssues'] = null;
 
-      final issues = await detection.checkForIssues;
+        final issues = await detection.checkForIssues;
 
-      expect(log, <Matcher>[isMethodCall('checkForIssues', arguments: null)]);
-      expect(issues, []);
+        expect(log, <Matcher>[isMethodCall('checkForIssues', arguments: null)]);
+        expect(issues, []);
+      });
+
+      test('handles null elements within the list', () async {
+        methodChannelReturns['checkForIssues'] = ['jailbreak', null, 'debugged'];
+
+        final issues = await detection.checkForIssues;
+
+        expect(issues, [
+          JailbreakIssue.jailbreak,
+          JailbreakIssue.unknown,
+          JailbreakIssue.debugged
+        ]);
+        expect(log, hasLength(1));
+      });
+
+      test('handles empty list from method channel', () async {
+        methodChannelReturns['checkForIssues'] = <dynamic>[];
+
+        final issues = await detection.checkForIssues;
+
+        expect(issues, []);
+        expect(log, hasLength(1));
+      });
     });
 
     test('isJailBroken returns correct value', () async {
