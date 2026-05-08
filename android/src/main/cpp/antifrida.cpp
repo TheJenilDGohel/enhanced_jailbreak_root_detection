@@ -273,5 +273,8 @@ Java_com_w3conext_enhanced_1jailbreak_1root_1detection_frida_AntiFridaNativeLoad
         }
     }
 
+    env->ReleaseStringUTFChars(signature, sig);
+    close(fd);
+
     return result;
 }
