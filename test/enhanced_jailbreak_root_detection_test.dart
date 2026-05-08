@@ -1,7 +1,7 @@
+import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:enhanced_jailbreak_root_detection/enhanced_jailbreak_root_detection.dart';
-import 'dart:io';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -28,18 +28,23 @@ void main() {
   group('EnhancedJailbreakRootDetection', () {
     final EnhancedJailbreakRootDetection detection = EnhancedJailbreakRootDetection.instance;
     final List<MethodCall> log = <MethodCall>[];
-
-    // We will set return values for method channel based on method name
-    Map<String, dynamic> methodChannelReturns = {};
+    final Map<String, dynamic> methodChannelReturns = {};
+    bool throwException = false;
 
     setUp(() {
       log.clear();
       methodChannelReturns.clear();
+      throwException = false;
+      detection.debugIsAndroidOverride = null;
 
-      // Mock the method channel
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(detection.methodChannel, (MethodCall methodCall) async {
         log.add(methodCall);
+        
+        if (throwException) {
+          throw PlatformException(code: 'ERROR', message: 'Test exception');
+        }
+
         return methodChannelReturns[methodCall.method];
       });
     });
@@ -47,6 +52,7 @@ void main() {
     tearDown(() {
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(detection.methodChannel, null);
+      detection.debugIsAndroidOverride = null;
     });
 
     test('checkForIssues returns parsed list of issues', () async {
@@ -160,22 +166,16 @@ void main() {
 
     group('isNotTrust', () {
       test('returns true when an error occurs during checks', () async {
-        // Mock to throw an error
-        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-            .setMockMethodCallHandler(detection.methodChannel, (MethodCall methodCall) async {
-          throw Exception('Platform exception');
-        });
-
+        throwException = true;
         expect(await detection.isNotTrust, true);
       });
 
-      test('calculates correct value based on individual checks', () async {
+      test('calculates correct value based on individual checks (Generic)', () async {
         // Setup a matrix of tests for different states
         final testCases = [
           {'jailBroken': false, 'realDevice': true, 'onExternalStorage': false, 'expected': false},
           {'jailBroken': true, 'realDevice': true, 'onExternalStorage': false, 'expected': true},
           {'jailBroken': false, 'realDevice': false, 'onExternalStorage': false, 'expected': true},
-          {'jailBroken': false, 'realDevice': true, 'onExternalStorage': true, 'expectedAndroid': true, 'expectedOther': false},
         ];
 
         for (var testCase in testCases) {
@@ -183,12 +183,38 @@ void main() {
           methodChannelReturns['isRealDevice'] = testCase['realDevice'];
           methodChannelReturns['isOnExternalStorage'] = testCase['onExternalStorage'];
 
-          final expected = (Platform.isAndroid && testCase.containsKey('expectedAndroid'))
-              ? testCase['expectedAndroid']
-              : (testCase.containsKey('expectedOther') ? testCase['expectedOther'] : testCase['expected']);
-
-          expect(await detection.isNotTrust, expected, reason: 'Failed for case: $testCase');
+          expect(await detection.isNotTrust, testCase['expected'], reason: 'Failed for case: $testCase');
         }
+      });
+
+      test('returns false when device is trusted (not jailbroken, real device, not android)', () async {
+        detection.debugIsAndroidOverride = false;
+        methodChannelReturns['isJailBroken'] = false;
+        methodChannelReturns['isRealDevice'] = true;
+        final result = await detection.isNotTrust;
+        expect(result, isFalse);
+      });
+
+      group('Platform.isAndroid branching', () {
+        setUp(() {
+          detection.debugIsAndroidOverride = true;
+        });
+
+        test('returns false when device is trusted (not jailbroken, real device, not on external storage)', () async {
+          methodChannelReturns['isJailBroken'] = false;
+          methodChannelReturns['isRealDevice'] = true;
+          methodChannelReturns['isOnExternalStorage'] = false;
+          final result = await detection.isNotTrust;
+          expect(result, isFalse);
+        });
+
+        test('returns true when device is on external storage (Android specific)', () async {
+          methodChannelReturns['isJailBroken'] = false;
+          methodChannelReturns['isRealDevice'] = true;
+          methodChannelReturns['isOnExternalStorage'] = true;
+          final result = await detection.isNotTrust;
+          expect(result, isTrue);
+        });
       });
     });
   });
