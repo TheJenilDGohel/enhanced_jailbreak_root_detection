@@ -81,15 +81,15 @@ class AntiFridaChecker(
             // check for Frida-related processes
             try {
                 val process = Runtime.getRuntime().exec("ps")
-                val bufferedReader = BufferedReader(InputStreamReader(process.inputStream))
-                var line: String? = bufferedReader.readLine()
-                while (line != null) {
-                    if (line.contains("frida-server")) {
-                        Log.d(TAG, "Frida-server process found")
-                        isFridaRunning = true
-                        break
+                BufferedReader(InputStreamReader(process.inputStream)).use { bufferedReader ->
+                    while (true) {
+                        val line = bufferedReader.readLine() ?: break
+                        if (line.contains("frida-server")) {
+                            Log.d(TAG, "Frida-server process found")
+                            isFridaRunning = true
+                            break
+                        }
                     }
-                    line = bufferedReader.readLine()
                 }
             } catch (e: Exception) {
                 Log.d(TAG, "Error checking for Frida-related processes")
@@ -98,15 +98,15 @@ class AntiFridaChecker(
             // check for Frida-related libraries
             try {
                 val process = Runtime.getRuntime().exec("lsof")
-                val bufferedReader = BufferedReader(InputStreamReader(process.inputStream))
-                var line: String? = bufferedReader.readLine()
-                while (line != null) {
-                    if (line.contains("libfrida-gadget.so")) {
-                        Log.d(TAG, "Frida-gadget library found")
-                        isFridaRunning = true
-                        break
+                BufferedReader(InputStreamReader(process.inputStream)).use { bufferedReader ->
+                    while (true) {
+                        val line = bufferedReader.readLine() ?: break
+                        if (line.contains("libfrida-gadget.so")) {
+                            Log.d(TAG, "Frida-gadget library found")
+                            isFridaRunning = true
+                            break
+                        }
                     }
-                    line = bufferedReader.readLine()
                 }
             } catch (e: Exception) {
                 Log.d(TAG, "Error checking for Frida-related libraries")
