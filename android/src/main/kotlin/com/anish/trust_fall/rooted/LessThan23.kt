@@ -11,11 +11,17 @@ class LessThan23 : CheckApiVersion {
     companion object {
         // executes a command on the system
         private fun canExecuteCommand(command: String): Boolean {
+            var process: Process? = null
             val executeResult: Boolean = try {
-                val process = Runtime.getRuntime().exec(command)
+                process = Runtime.getRuntime().exec(command)
                 process.waitFor() == 0
             } catch (e: Exception) {
                 false
+            } finally {
+                runCatching { process?.inputStream?.close() }
+                runCatching { process?.outputStream?.close() }
+                runCatching { process?.errorStream?.close() }
+                process?.destroy()
             }
             return executeResult
         }

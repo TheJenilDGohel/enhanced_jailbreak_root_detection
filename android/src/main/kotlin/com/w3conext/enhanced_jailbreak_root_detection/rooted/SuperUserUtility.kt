@@ -25,7 +25,10 @@ object SuperUserUtility {
         } catch (e: Exception) {
             rooted = false
         } finally {
-            dos?.close()
+            runCatching { dos?.close() }
+            runCatching { process?.inputStream?.close() }
+            runCatching { process?.outputStream?.close() }
+            runCatching { process?.errorStream?.close() }
             process?.destroy()
         }
         return rooted
@@ -35,9 +38,13 @@ object SuperUserUtility {
         if (!rooted) return ""
 
         var out = ""
+        var process: Process? = null
+        var stdin: DataOutputStream? = null
+        var br: BufferedReader? = null
+        var brErr: BufferedReader? = null
         try {
-            val process = Runtime.getRuntime().exec("su")
-            val stdin = DataOutputStream(process.outputStream)
+            process = Runtime.getRuntime().exec("su")
+            stdin = DataOutputStream(process.outputStream)
             val stdout = process.inputStream
             val stderr = process.errorStream
 
@@ -48,20 +55,28 @@ object SuperUserUtility {
             stdin.flush()
             stdin.close()
 
-            var br = BufferedReader(InputStreamReader(stdout))
+            br = BufferedReader(InputStreamReader(stdout))
             var line: String?
 
             while ((br.readLine().also { line = it }) != null) {
                 out += line
             }
             br.close()
-            br = BufferedReader(InputStreamReader(stderr))
-            while ((br.readLine().also { line = it }) != null) {
+            brErr = BufferedReader(InputStreamReader(stderr))
+            while ((brErr.readLine().also { line = it }) != null) {
                 out += line
             }
-            br.close()
+            brErr.close()
         } catch (e: Exception) {
             Log.e(TAG, e.stackTraceToString())
+        } finally {
+            runCatching { stdin?.close() }
+            runCatching { br?.close() }
+            runCatching { brErr?.close() }
+            runCatching { process?.inputStream?.close() }
+            runCatching { process?.outputStream?.close() }
+            runCatching { process?.errorStream?.close() }
+            process?.destroy()
         }
         return out
     }

@@ -29,13 +29,18 @@ class GreaterThan23 : CheckApiVersion {
 
     private fun checkRootMethod2(): Boolean {
         var process: Process? = null
+        var `in`: BufferedReader? = null
         return try {
             process = Runtime.getRuntime().exec(arrayOf("/system/xbin/which", "su"))
-            val `in` = BufferedReader(InputStreamReader(process.inputStream))
+            `in` = BufferedReader(InputStreamReader(process.inputStream))
             `in`.readLine() != null
         } catch (t: Throwable) {
             false
         } finally {
+            runCatching { `in`?.close() }
+            runCatching { process?.inputStream?.close() }
+            runCatching { process?.outputStream?.close() }
+            runCatching { process?.errorStream?.close() }
             process?.destroy()
         }
     }
