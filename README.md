@@ -1,13 +1,17 @@
+<p align="center">
+  <img src=".github/assets/logo.png" width="120" height="120" />
+</p>
+
 # Enhanced Jailbreak & Root Detection 🛡️
 
 ![Banner](.github/assets/banner.png)
 
 [![pub package](https://img.shields.io/pub/v/enhanced_jailbreak_root_detection.svg)](https://pub.dartlang.org/packages/enhanced_jailbreak_root_detection)
-[![Build Status](https://github.com/wm-jenildgohel/enhanced_jailbreak_root_detection/actions/workflows/flutter_plugin.yml/badge.svg)](https://github.com/wm-jenildgohel/enhanced_jailbreak_root_detection/actions/workflows/flutter_plugin.yml)
+[![Build Status](https://github.com/TheJenilDGohel/enhanced_jailbreak_root_detection/actions/workflows/flutter_plugin.yml/badge.svg)](https://github.com/TheJenilDGohel/enhanced_jailbreak_root_detection/actions/workflows/flutter_plugin.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Platform](https://img.shields.io/badge/platform-android%20%7C%20ios-blue.svg)](https://pub.dev/packages/enhanced_jailbreak_root_detection)
 
-A super-charged, multi-layered security plugin for Flutter. It combines industry-standard detection methods with advanced heuristic checks to provide a rock-solid defense against rooted and jailbroken environments.
+Professional Flutter security plugin for deep jailbreak & root detection. Multi-layered defense using RootBeer, Frida-heuristics, and IOSSecuritySuite. Optimized for production-grade security and 16KB page size support.
 
 ## ✨ Why Choose This Plugin?
 
@@ -36,7 +40,7 @@ Or manually add it:
 
 ```yaml
 dependencies:
-  enhanced_jailbreak_root_detection: ^0.0.2
+  enhanced_jailbreak_root_detection: ^0.0.3
 ```
 
 ### 📋 Platform Configuration

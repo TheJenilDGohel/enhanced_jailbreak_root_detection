@@ -1,8 +1,16 @@
+## 0.0.3
+
+* **Hardened Security:** Fixed multiple File Descriptor (FD) leaks in Android system command execution via strict Kotlin `.use` blocks and resource management.
+* **Open-Source Excellence:** Completely revamped documentation with premium banner, architecture diagrams, and comprehensive setup guides.
+* **Community Standards:** Added `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, and GitHub issue/PR templates.
+* **Stability:** Fixed lint warnings and stabilized unit test suite with 100% pass rate.
+
 ## 0.0.2
 
-* Updated README with friendly tone and quick‑start guide.
+* Updated README with professional documentation and roadmap.
 * Bumped package version to `0.0.2`.
-* Minor code cleanup.
+* Resolved complex merge conflicts from community contributions.
+* Minor code cleanup and lint fixes.
 
 ## 0.0.1
 

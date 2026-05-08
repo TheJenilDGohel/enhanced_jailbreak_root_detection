@@ -5,7 +5,7 @@ First off, thank you for considering contributing! It's people like you that mak
 ## 🌈 How Can I Contribute?
 
 ### Reporting Bugs 🐛
-- Use the [GitHub issue tracker](https://github.com/wm-jenildgohel/enhanced_jailbreak_root_detection/issues) to report bugs.
+- Use the [GitHub issue tracker](https://github.com/TheJenilDGohel/enhanced_jailbreak_root_detection/issues) to report bugs.
 - Describe the steps to reproduce the issue.
 - Include information about your environment (Flutter version, OS, device model).
 - If the app crashes, include the logs.
