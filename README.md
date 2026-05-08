@@ -1,7 +1,3 @@
-<p align="center">
-  <img src=".github/assets/logo.png" width="120" height="120" />
-</p>
-
 # Enhanced Jailbreak & Root Detection 🛡️
 
 ![Banner](.github/assets/banner.png)
