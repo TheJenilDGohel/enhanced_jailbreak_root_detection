@@ -41,7 +41,6 @@ object SuperUserUtility {
             val stdout = process.inputStream
             val stderr = process.errorStream
 
-            Log.i(TAG, "execRootCmd: $cmd")
             stdin.writeBytes(cmd + "\n")
             stdin.flush()
             stdin.writeBytes("exit\n")
