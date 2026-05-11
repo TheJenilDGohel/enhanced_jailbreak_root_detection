@@ -25,12 +25,11 @@ object AntiFridaBlocklist {
     }
 
     fun checkContain(result: String): Boolean {
-        var moduleExists = false
         for (module in TARGETS) {
             if (result.contains(module)) {
-                moduleExists = true
+                return true
             }
         }
-        return moduleExists
+        return false
     }
 }
