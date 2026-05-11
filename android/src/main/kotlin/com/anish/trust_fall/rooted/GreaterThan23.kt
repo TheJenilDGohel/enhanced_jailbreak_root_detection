@@ -10,17 +10,6 @@ class GreaterThan23 : CheckApiVersion {
     }
 
     private fun checkRootMethod1(): Boolean {
-        val paths = arrayOf(
-            "/system/app/Superuser.apk",
-            "/sbin/su",
-            "/system/bin/su",
-            "/system/xbin/su",
-            "/data/local/xbin/su",
-            "/data/local/bin/su",
-            "/system/sd/xbin/su",
-            "/system/bin/failsafe/su",
-            "/data/local/su"
-        )
         for (path in paths) {
             if (File(path).exists()) return true
         }
@@ -38,5 +27,19 @@ class GreaterThan23 : CheckApiVersion {
         } finally {
             process?.destroy()
         }
+    }
+
+    companion object {
+        private val paths = arrayOf(
+            "/system/app/Superuser.apk",
+            "/sbin/su",
+            "/system/bin/su",
+            "/system/xbin/su",
+            "/data/local/xbin/su",
+            "/data/local/bin/su",
+            "/system/sd/xbin/su",
+            "/system/bin/failsafe/su",
+            "/data/local/su"
+        )
     }
 }
