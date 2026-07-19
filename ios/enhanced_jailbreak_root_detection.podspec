@@ -14,8 +14,7 @@ Check Jailbreak and Rooted for Android and iOS.
   s.license          = { :file => '../LICENSE' }
   s.author           = 'w3connext'
   s.source           = { :path => '.' }
-  s.source_files     = 'enhanced_jailbreak_root_detection/Sources/enhanced_jailbreak_root_detection/**/*'
-  s.public_header_files = 'enhanced_jailbreak_root_detection/Sources/enhanced_jailbreak_root_detection/include/**/*.h'
+  s.source_files     = 'enhanced_jailbreak_root_detection/Sources/enhanced_jailbreak_root_detection/**/*.swift'
   s.dependency       'Flutter'
   s.dependency       'IOSSecuritySuite', '~> 1.9.10'
   s.platform         = :ios, '11.0'
