@@ -1,6 +1,6 @@
 name: enhanced_jailbreak_root_detection
 description: A comprehensive Flutter plugin for detecting jailbroken/rooted devices with RootBeer + Frida detection for Android and IOSSecuritySuite for iOS.
-version: 0.0.3
+version: 0.0.4-dev.1
 license: MIT
 homepage: https://github.com/TheJenilDGohel/enhanced_jailbreak_root_detection
 repository: https://github.com/TheJenilDGohel/enhanced_jailbreak_root_detection

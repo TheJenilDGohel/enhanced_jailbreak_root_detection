@@ -82,6 +82,34 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build example (iOS)
+      - name: Build example (iOS — CocoaPods)
+        working-directory: example
+        run: flutter build ios --no-codesign
+
+  build_ios_spm:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.35.4"
+
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: ${{ runner.os }}-pub-
+
+      - name: Enable Swift Package Manager
+        run: flutter config --enable-swift-package-manager
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build example (iOS — SPM)
         working-directory: example
         run: flutter build ios --no-codesign

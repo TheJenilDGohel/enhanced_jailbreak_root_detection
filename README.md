@@ -45,6 +45,8 @@ dependencies:
 No additional configuration is required for standard use. For 16KB page size support details, see [Android Documentation](android/README.md).
 
 #### iOS
+> **Swift Package Manager (SPM):** Starting with Flutter 3.44, SPM is the default iOS dependency manager. This plugin supports both SPM and CocoaPods — no additional configuration is needed. For Flutter ≥ 3.24, SPM is used automatically; for older versions, CocoaPods continues to work as before.
+
 Add the following `LSApplicationQueriesSchemes` to your `ios/Runner/Info.plist` to allow the plugin to detect common jailbreak apps:
 
 ```xml

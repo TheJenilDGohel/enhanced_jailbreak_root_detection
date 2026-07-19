@@ -1,3 +1,10 @@
+## 0.0.4-dev.1
+
+* **Swift Package Manager Support:** Added `ios/enhanced_jailbreak_root_detection/Package.swift` alongside existing CocoaPods setup. No breaking changes for existing CocoaPods users.
+* Restructured iOS source files to SPM-compliant `Sources/` layout.
+* Updated podspec `source_files` to match the new directory structure.
+* Added SPM CI build leg to GitHub Actions workflow.
+
 ## 0.0.3
 
 * **Hardened Security:** Fixed multiple File Descriptor (FD) leaks in Android system command execution via strict Kotlin `.use` blocks and resource management.
