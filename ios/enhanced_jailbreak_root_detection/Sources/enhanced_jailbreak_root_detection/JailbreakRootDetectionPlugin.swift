@@ -1,7 +1,7 @@
 import Flutter
 import UIKit
 
-public class SwiftJailbreakRootDetectionPlugin: NSObject, FlutterPlugin {
+public class JailbreakRootDetectionPlugin: NSObject, FlutterPlugin {
     
     private var jailbreakRootDetection: JailbreakRootDetection? = nil
         
@@ -14,7 +14,7 @@ public class SwiftJailbreakRootDetectionPlugin: NSObject, FlutterPlugin {
         
         let jailbreakRootDetection = JailbreakRootDetection()
         
-        let instance = SwiftJailbreakRootDetectionPlugin(jailbreakRootDetection: jailbreakRootDetection)
+        let instance = JailbreakRootDetectionPlugin(jailbreakRootDetection: jailbreakRootDetection)
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
     
