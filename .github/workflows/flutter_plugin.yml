@@ -2,9 +2,9 @@ name: Flutter Plugin CI
 
 on:
   push:
-    branches: [main, migrate/gradle]
+    branches: [main, migrate/gradle, 'release/*']
   pull_request:
-    branches: [main]
+    branches: [main, 'release/*']
 
 jobs:
   build_android:
